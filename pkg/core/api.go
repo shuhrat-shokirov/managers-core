@@ -25,8 +25,8 @@ type DbTxError struct {
 
 type accounts struct {
 	Id    int64
-	user_id int64
-	score int64
+	User_id int64
+	Score int64
 }
 
 func (receiver *QueryError) Unwrap() error {
@@ -115,7 +115,7 @@ func GetAllProducts(db *sql.DB) (products []accounts, err error) {
 
 	for rows.Next() {
 		product := accounts{}
-		err = rows.Scan(&product.Id, &product.user_id, &product.score)
+		err = rows.Scan(&product.Id, &product.User_id, &product.Score)
 		if err != nil {
 			return nil, dbError(err)
 		}
