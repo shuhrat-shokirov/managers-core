@@ -38,5 +38,5 @@ VALUES 	(1, 1, 200),
        ON CONFLICT DO NOTHING;`
 
 const loginSQL = `SELECT login, password FROM users WHERE login = ?`
-const getAllAccountsByIdUser = `SELECT score FROM accounts WHERE id = ?;`
+const getAllAccountsByIdUser = `SELECT name, telNumber From users`
 //const insertSaleSQL = `INSERT INTO sales(manager_id, product_id, price, qty) VALUES (:manager_id, :product_id, :price, :qty);`
