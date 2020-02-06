@@ -23,11 +23,10 @@ type DbTxError struct {
 	RollbackErr error
 }
 
-type Product struct {
+type accounts struct {
 	Id    int64
-	Name  string
-	Price int64
-	Qty   int64
+	user_id int64
+	score int64
 }
 
 func (receiver *QueryError) Unwrap() error {
@@ -103,7 +102,7 @@ func Login(login, password string, db *sql.DB) (bool, error) {
 //}
 
 
-func GetAllProducts(db *sql.DB) (products []Product, err error) {
+func GetAllProducts(db *sql.DB) (products []accounts, err error) {
 	rows, err := db.Query(getAllAccountsByIdUser)
 	if err != nil {
 		return nil, queryError(getAllAccountsByIdUser, err)
@@ -115,8 +114,8 @@ func GetAllProducts(db *sql.DB) (products []Product, err error) {
 	}()
 
 	for rows.Next() {
-		product := Product{}
-		err = rows.Scan(&product.Id, &product.Name, &product.Price, &product.Qty)
+		product := accounts{}
+		err = rows.Scan(&product.Id, &product.user_id, &product.score)
 		if err != nil {
 			return nil, dbError(err)
 		}
