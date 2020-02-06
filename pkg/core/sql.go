@@ -34,7 +34,7 @@ VALUES 	(1, 1, 200),
 		(4, 3, 1010),
 		(5, 4, 100),
 		(6, 5, 0),
-		(7, 6, 1
+		(7, 6, 1)
        ON CONFLICT DO NOTHING;`
 
 const loginSQL = `SELECT login, password FROM users WHERE login = ?`

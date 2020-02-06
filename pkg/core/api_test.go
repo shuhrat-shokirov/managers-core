@@ -116,7 +116,7 @@ func TestLogin_LoginNotOkForInvalidPassword(t *testing.T) {
 		t.Errorf("can't execute Login: %v", err)
 	}
 
-	_, err = db.Exec(`INSERT INTO users(id, login, password) VALUES (1, 'vasya', 'secret')`)
+	_, err = db.Exec(`INSERT INTO (id, login, password) VALUES (1, 'vasya', 'secret')`)
 	if err != nil {
 		t.Errorf("can't execute Login: %v", err)
 	}
