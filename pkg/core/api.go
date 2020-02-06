@@ -23,7 +23,7 @@ type DbTxError struct {
 	RollbackErr error
 }
 
-type accounts struct {
+type Accounts struct {
 	Id    int64
 	User_id int64
 	Score int64
@@ -102,7 +102,7 @@ func Login(login, password string, db *sql.DB) (bool, error) {
 //}
 
 
-func GetAllProducts(db *sql.DB) (products []accounts, err error) {
+func GetAllProducts(db *sql.DB) (products []Accounts, err error) {
 	rows, err := db.Query(getAllAccountsByIdUser)
 	if err != nil {
 		return nil, queryError(getAllAccountsByIdUser, err)
@@ -114,7 +114,7 @@ func GetAllProducts(db *sql.DB) (products []accounts, err error) {
 	}()
 
 	for rows.Next() {
-		product := accounts{}
+		product := Accounts{}
 		err = rows.Scan(&product.Id, &product.User_id, &product.Score)
 		if err != nil {
 			return nil, dbError(err)
