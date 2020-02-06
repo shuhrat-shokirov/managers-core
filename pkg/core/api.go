@@ -56,7 +56,7 @@ func dbError(err error) *DbError {
 
 
 func Init(db *sql.DB) (err error) {
-	ddls := []string{managersDDL, productsDDL, salesDDL}
+	ddls := []string{usersDDL, accountsDDL}
 	for _, ddl := range ddls {
 		_, err = db.Exec(ddl)
 		if err != nil {
@@ -64,7 +64,7 @@ func Init(db *sql.DB) (err error) {
 		}
 	}
 
-	initialData := []string{managersInitialData, productsInitialData}
+	initialData := []string{usersInitialData,accountsInitialData}
 	for _, datum := range initialData {
 		_, err = db.Exec(datum)
 		if err != nil {
@@ -104,9 +104,9 @@ func Login(login, password string, db *sql.DB) (bool, error) {
 
 
 func GetAllProducts(db *sql.DB) (products []Product, err error) {
-	rows, err := db.Query(getAllProductsSQL)
+	rows, err := db.Query(getAllAccountsByIdUser)
 	if err != nil {
-		return nil, queryError(getAllProductsSQL, err)
+		return nil, queryError(getAllAccountsByIdUser, err)
 	}
 	defer func() {
 		if innerErr := rows.Close(); innerErr != nil {
@@ -150,16 +150,16 @@ func Sale(productId int64, productQty int64, db *sql.DB) (err error) {
 	var currentPrice int64
 	var currentQty int64
 
-	err = tx.QueryRow(
+	/*err = tx.QueryRow(
 		getProductPriceAndQtyByIdSQL,
 		productId,
 	).Scan(&currentPrice, &currentQty)
 	if err != nil {
 		return err
 	}
-
+*/
 	// TODO: желательно ещё проверить, что продаём меньше или равно
-	_, err = tx.Exec(
+	/*_, err = tx.Exec(
 		insertSaleSQL,
 		sql.Named("manager_id", 1),
 		sql.Named("product_id", productId),
@@ -169,6 +169,6 @@ func Sale(productId int64, productQty int64, db *sql.DB) (err error) {
 	if err != nil {
 		return err
 	}
-
+	*/
 	return nil
 }
