@@ -41,7 +41,7 @@ func TestLogin_NoSuchLoginForEmptyDb(t *testing.T) {
 
 	// shift 2 раза -> sql dialect
 	_, err = db.Exec(`
-	CREATE TABLE users (
+	CREATE TABLE managers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
 	login TEXT NOT NULL UNIQUE,
 	password TEXT NOT NULL)`)
@@ -72,7 +72,7 @@ func TestLogin_LoginOk(t *testing.T) {
 
 	// shift 2 раза -> sql dialect
 	_, err = db.Exec(`
-	CREATE TABLE users (
+	CREATE TABLE managers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
 	login TEXT NOT NULL UNIQUE,
 	password TEXT NOT NULL)`)
@@ -80,7 +80,7 @@ func TestLogin_LoginOk(t *testing.T) {
 		t.Errorf("can't execute Login: %v", err)
 	}
 
-	_, err = db.Exec(`INSERT INTO users(id, login, password) VALUES (1, 'vasya', 'secret')`)
+	_, err = db.Exec(`INSERT INTO managers(id, login, password) VALUES (1, 'vasya', 'secret')`)
 	if err != nil {
 		t.Errorf("can't execute Login: %v", err)
 	}
@@ -108,7 +108,7 @@ func TestLogin_LoginNotOkForInvalidPassword(t *testing.T) {
 
 	// shift 2 раза -> sql dialect
 	_, err = db.Exec(`
-	CREATE TABLE users (
+	CREATE TABLE managers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
 	login TEXT NOT NULL UNIQUE,
 	password TEXT NOT NULL)`)
@@ -116,7 +116,7 @@ func TestLogin_LoginNotOkForInvalidPassword(t *testing.T) {
 		t.Errorf("can't execute Login: %v", err)
 	}
 
-	_, err = db.Exec(`INSERT INTO (id, login, password) VALUES (1, 'vasya', 'secret')`)
+	_, err = db.Exec(`INSERT INTO managers(id, login, password) VALUES (1, 'vasya', 'secret')`)
 	if err != nil {
 		t.Errorf("can't execute Login: %v", err)
 	}

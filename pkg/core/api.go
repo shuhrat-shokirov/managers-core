@@ -23,10 +23,11 @@ type DbTxError struct {
 	RollbackErr error
 }
 
-type Accounts struct {
+type Product struct {
 	Id    int64
-	User_id int64
-	Score int64
+	Name  string
+	Price int64
+	Qty   int64
 }
 
 func (receiver *QueryError) Unwrap() error {
@@ -55,7 +56,7 @@ func dbError(err error) *DbError {
 
 
 func Init(db *sql.DB) (err error) {
-	ddls := []string{usersDDL, accountsDDL}
+	ddls := []string{managersDDL, productsDDL, salesDDL}
 	for _, ddl := range ddls {
 		_, err = db.Exec(ddl)
 		if err != nil {
@@ -63,7 +64,7 @@ func Init(db *sql.DB) (err error) {
 		}
 	}
 
-	initialData := []string{usersInitialData,accountsInitialData}
+	initialData := []string{managersInitialData, productsInitialData}
 	for _, datum := range initialData {
 		_, err = db.Exec(datum)
 		if err != nil {
@@ -102,10 +103,10 @@ func Login(login, password string, db *sql.DB) (bool, error) {
 //}
 
 
-func GetAllProducts(db *sql.DB) (products []Accounts, err error) {
-	rows, err := db.Query(getAllAccountsByIdUser)
+func GetAllProducts(db *sql.DB) (products []Product, err error) {
+	rows, err := db.Query(getAllProductsSQL)
 	if err != nil {
-		return nil, queryError(getAllAccountsByIdUser, err)
+		return nil, queryError(getAllProductsSQL, err)
 	}
 	defer func() {
 		if innerErr := rows.Close(); innerErr != nil {
@@ -114,8 +115,8 @@ func GetAllProducts(db *sql.DB) (products []Accounts, err error) {
 	}()
 
 	for rows.Next() {
-		product := Accounts{}
-		err = rows.Scan(&product.User_id, &product.Score)
+		product := Product{}
+		err = rows.Scan(&product.Id, &product.Name, &product.Price, &product.Qty)
 		if err != nil {
 			return nil, dbError(err)
 		}
@@ -146,19 +147,19 @@ func Sale(productId int64, productQty int64, db *sql.DB) (err error) {
 		err = tx.Commit()
 	}()
 
-	//var currentPrice int64
-	//var currentQty int64
+	var currentPrice int64
+	var currentQty int64
 
-	/*err = tx.QueryRow(
+	err = tx.QueryRow(
 		getProductPriceAndQtyByIdSQL,
 		productId,
 	).Scan(&currentPrice, &currentQty)
 	if err != nil {
 		return err
 	}
-*/
+
 	// TODO: желательно ещё проверить, что продаём меньше или равно
-	/*_, err = tx.Exec(
+	_, err = tx.Exec(
 		insertSaleSQL,
 		sql.Named("manager_id", 1),
 		sql.Named("product_id", productId),
@@ -168,6 +169,6 @@ func Sale(productId int64, productQty int64, db *sql.DB) (err error) {
 	if err != nil {
 		return err
 	}
-	*/
+
 	return nil
 }
