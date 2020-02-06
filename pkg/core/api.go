@@ -147,8 +147,8 @@ func Sale(productId int64, productQty int64, db *sql.DB) (err error) {
 		err = tx.Commit()
 	}()
 
-	var currentPrice int64
-	var currentQty int64
+	//var currentPrice int64
+	//var currentQty int64
 
 	/*err = tx.QueryRow(
 		getProductPriceAndQtyByIdSQL,
