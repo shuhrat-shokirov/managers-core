@@ -115,7 +115,7 @@ func GetAllProducts(db *sql.DB) (products []Accounts, err error) {
 
 	for rows.Next() {
 		product := Accounts{}
-		err = rows.Scan(&product.Id, &product.User_id, &product.Score)
+		err = rows.Scan(&product.User_id, &product.Score)
 		if err != nil {
 			return nil, dbError(err)
 		}
